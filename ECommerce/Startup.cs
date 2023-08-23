@@ -1,4 +1,7 @@
+using ECommerce.Common;
 using ECommerce.Context;
+using ECommerce.Services.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,6 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace ECommerce
 {
@@ -22,12 +28,31 @@ namespace ECommerce
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var secretKey = Configuration["AppSettings:SecretKey"];
+            var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
 
             services.AddControllers();
             services.AddDbContext<ECommerceContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("ECommerceDB"));
             });
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    option.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+
+            services.AddScoped<IUserService, UserService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

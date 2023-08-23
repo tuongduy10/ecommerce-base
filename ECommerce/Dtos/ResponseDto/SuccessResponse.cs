@@ -5,26 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Common.ResponseDto
+namespace ECommerce.Dtos.ResponseDto
 {
-    public class SuccessResponse<T> : Response
+    public class SuccessResponse<T> : Response<T>
     {
-        public T data { get; set; }
         public SuccessResponse(string _message = "success")
         {
-            isSucceed = true;
+            isSuccess = true;
             status = StatusConstant.SUCCESS;
             message = _message;
         }
         public SuccessResponse(T _data)
         {
-            isSucceed = true;
+            isSuccess = true;
             status = StatusConstant.SUCCESS;
             data = _data;
         }
         public SuccessResponse(string _message, T _data)
         {
-            isSucceed = true;
+            isSuccess = true;
             status = StatusConstant.SUCCESS;
             message = _message;
             data = _data;

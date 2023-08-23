@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Common.ResponseDto
+namespace ECommerce.Dtos.ResponseDto
 {
-    public class Response
+    public class Response<T>
     {
-        public bool isSucceed { get; set; }
+        public bool isSuccess { get; set; }
         public string status { get; set; }
         public string message { get; set; }
+        public T data { get; set; }
     }
 }

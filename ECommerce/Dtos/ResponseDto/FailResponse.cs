@@ -1,18 +1,17 @@
-﻿using ECommerce.Common.ResponseDto;
-using ECommerce.Constants;
+﻿using ECommerce.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerce.Common
+namespace ECommerce.Dtos.ResponseDto
 {
-    public class FailResponse : Response
+    public class FailResponse<T> : Response<T>
     {
         public FailResponse(string _message)
         {
-            isSucceed = false;
+            isSuccess = false;
             status = StatusConstant.FAIL;
             message = _message;
         }
