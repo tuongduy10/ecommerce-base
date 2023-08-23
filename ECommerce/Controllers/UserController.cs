@@ -41,13 +41,13 @@ namespace ECommerce.Controllers
             {
                 return BadRequest(result);
             }
-            var user = result.data;
-            return Ok(new SuccessResponse<UserDto>
+
+            return Ok(new SuccessResponse<string>
             {
                 status = "success",
                 isSuccess = result.isSuccess,
                 message = result.message,
-                data = GenerateToken(user)
+                data = GenerateToken(result.data)
             });
         }
         private string GenerateToken(UserDto user)
